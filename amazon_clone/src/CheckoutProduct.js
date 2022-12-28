@@ -1,20 +1,39 @@
 import React from 'react'
 import "./CheckoutProduct.css";
+import {useStateValue} from "./StateProvider";
 
-function CheckoutProduct() {
+
+
+function CheckoutProduct({ id, image, title, price, rating }) {
+
+    const [{basket}, dispatch] = useStateValue();
+
+    const removeFromBasket = () => {
+        dispatch({
+            type: "REMOVE_FROM_BASKET",
+            id: id,
+        })
+    }
+
     return (
         <div className="checkoutProduct">
-            <img src="https://m.media-amazon.com/images/I/6182S7MYC2L._AC_UY218_.jpg" alt="" className="checkoutProduct_image" />
+            <img src={image} alt="" className="checkoutProduct_image" />
 
             <div className="checkoutProduct_info">
                 <p className="checkoutProduct_title">
-                    Echo Dot (3rd Gen, 2018 release) - Smart speaker with Alexa - Charcoal
+                    {title}
                 </p>
-                <p className="checkoutProduct_price">$14.99</p>
+                <p className="checkoutProduct_price">${price}</p>
                 <div className="checkoutProduct_rating">
-                    
+                    {Array(rating)
+                        .fill()
+                        .map((_, i) => (
+                            <small>
+                                ⭐️
+                            </small>
+                        ))}
                 </div>
-                <button>Remove from Cart</button>
+                <button onClick={removeFromBasket}>Remove from Cart</button>
             </div>
         </div>
     )
